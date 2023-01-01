@@ -1,45 +1,41 @@
 <template>
-
+<!--  顶部栏-->
   <van-nav-bar
       title="标题"
       left-text="返回"
-      right-text="按钮"
+      right-text="搜索"
       left-arrow
       @click-left="onClickLeft"
       @click-right="onClickRight"
   />
-
+<!--中部内容-->
   <div id="content">
-    <template v-if="active === 'index' ">
-      <Index/>
-    </template>
-    <template v-if="active === 'team'">
-      <Team/>
-    </template>
-    <template v-if="active === 'user'">
-
-    </template>
+    <router-view/>
   </div>
-  <van-tabbar v-model="active" @change="onChange" active-color="#ee0a24" inactive-color="#000">
-    <van-tabbar-item icon="home-o" name="index">主页</van-tabbar-item>
-    <van-tabbar-item icon="search" name="team">队伍</van-tabbar-item>
-    <van-tabbar-item icon="setting-o" name="user">个人</van-tabbar-item>
+<!--底部栏-->
+  <van-tabbar route>
+    <van-tabbar-item replace to="/" icon="home-o">主页</van-tabbar-item>
+    <van-tabbar-item replace to="/team" icon="friends-o">队伍</van-tabbar-item>
+    <van-tabbar-item replace to="/user" icon="user-o">个人</van-tabbar-item>
   </van-tabbar>
-
 
 </template>
 
 <script setup>
-import Index from "../pages/Index.vue";
-
-const onClickLeft = () => alert('左');
-const onClickRight = () => alert('右');
-
-import {ref} from 'vue';
 import {Toast} from 'vant';
-import Team from "../pages/Team.vue";
+import {useRouter} from 'vue-router'
 
-const active = ref("index");
+const router=useRouter();
+// 回到上一页面
+const onClickLeft = () => (
+    router.back()
+);
+const onClickRight = () => (
+    router.push('/search')
+);
+
+
+// const active = ref("index");
 const onChange = (index) => Toast(`标签 ${index}`);
 
 </script>
