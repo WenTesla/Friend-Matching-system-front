@@ -7,7 +7,11 @@
       left-arrow
       @click-left="onClickLeft"
       @click-right="onClickRight"
-  />
+  >
+  <template #right>
+    <van-icon name="search" size="18" />
+  </template>
+  </van-nav-bar>
 <!--中部内容-->
   <div id="content">
     <router-view/>

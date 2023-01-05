@@ -4,7 +4,7 @@
         v-model="searchText"
         show-action
         placeholder="请输入标签"
-        @search="onSearch"
+        @search="onSearchTag"
         @cancel="onCancel"
     />
   </form>
@@ -29,16 +29,25 @@
       v-model:main-active-index="activeIndex"
       :items="tagList"
   />
-
+  <!--  搜索按钮-->
+  <div style="padding: 12px">
+    <van-button icon="search" type="primary" size="large" @click="search">搜索</van-button>
+  </div>
 </template>
 
 <script setup>
+
 import {ref} from 'vue';
+//定义路由
+import {useRouter} from "vue-router";
+
+//传参路由
+const route = useRouter();
 
 const searchText = ref('');
 
-//搜索
-const onSearch = (val) => {
+//搜索TAG标签
+const onSearchTag = () => {
   tagList.value = originTagList.map(parentTag => {
     const tempChildren = [...parentTag.children];
     const tempParentTag = {...parentTag};
@@ -76,7 +85,29 @@ const originTagList = [
       {text: '大四', id: '大四'},
     ],
   },
+  {
+    text: '语言',
+    children: [
+      {text: 'java', id: 'java'},
+      {text: 'C++', id: 'C++'},
+      {text: 'python', id: 'python'},
+    ],
+  }
 ]
+/**
+ * 注意这里，不是SearchText
+ */
+const search = () => {
+  console.log('Search:' + activeIds.value)
+  route.push({
+    path: '/user/searchPage',
+    //踩坑：定义tags属性，不然无法传入参数
+    query: {
+      tags: activeIds.value
+    }
+
+  })
+}
 
 let tagList = ref(originTagList);
 //移除标签
